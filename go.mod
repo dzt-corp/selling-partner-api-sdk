@@ -1,4 +1,4 @@
-module github.com/amzapi/selling-partner-api-sdk
+module github.com/dzt-corp/selling-partner-api-sdk
 
 go 1.16
 
