@@ -161,7 +161,12 @@ type Money struct {
 
 // Order defines model for Order.
 type Order struct {
+	//dzt customize info
+	BuyerInfo *OrderBuyerInfo `json:"BuyerInfo,omitempty"`
 
+	//dzt customize info
+	OrderItems *OrderItemList `json:"OrderItems,omitempty"`
+	
 	// An Amazon-defined order identifier, in 3-7-7 format.
 	AmazonOrderId string `json:"AmazonOrderId"`
 
@@ -318,6 +323,8 @@ type OrderBuyerInfo struct {
 
 // OrderItem defines model for OrderItem.
 type OrderItem struct {
+	//dzt customize
+	OrderItemBuyerInfo *OrderItemBuyerInfo `json:"OrderItemBuyerInfo,omitempty"`
 
 	// The Amazon Standard Identification Number (ASIN) of the item.
 	ASIN string `json:"ASIN"`
