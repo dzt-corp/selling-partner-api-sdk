@@ -130,6 +130,8 @@ type ClientInterface interface {
 
 	// GetCatalogItem request
 	GetCatalogItem(ctx context.Context, asin string, params *GetCatalogItemParams) (*http.Response, error)
+
+	V2022GetCatalogItem(ctx context.Context, asin string, params *V2022GetCatalogItemParams) (*http.Response, error)
 }
 
 func (c *Client) ListCatalogCategories(ctx context.Context, params *ListCatalogCategoriesParams) (*http.Response, error) {
