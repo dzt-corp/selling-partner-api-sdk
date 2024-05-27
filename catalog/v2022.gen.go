@@ -42,9 +42,15 @@ type ProductDescription struct {
 	Language string `json:"language_tag"`
 	Value    string `json:"value"`
 }
+
+type ProductColor struct {
+	Language string `json:"language_tag"`
+	Value    string `json:"value"`
+}
 type ProductAttributes struct {
 	ProductDescription []*ProductDescription `json:"product_description,omitempty"`
 	ProductTypes       *ProductTypes         `json:"productTypes,omitempty"`
+	ProductColor       []*ProductColor       `json:"color,omitempty"`
 	Brands             *Brands               `json:"brand,omitempty"`
 	HeaderWearSizes    *HeaderWearSizes      `json:"headwear_size,omitempty"`
 	ProductImages      *ProductImages        `json:"images,omitempty"`
