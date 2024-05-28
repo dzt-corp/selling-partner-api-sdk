@@ -116,7 +116,6 @@ func ParserV2022GetCatalogItemWithResponse(rsp *http.Response) (*V2022GetCatalog
 		return nil, err
 	}
 
-	fmt.Println("ParserV2022GetCatalogItemWithResponse ", string(bodyBytes))
 	response := &V2022GetCatalogItemResp{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
