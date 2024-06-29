@@ -647,7 +647,7 @@ type ShipmentPackageDetail struct {
 	CarrierName            *string               `json:"carrierName,omitempty"`
 	ShippingMethod         *string               `json:"shippingMethod,omitempty"`
 	TrackingNumber         string                `json:"trackingNumber,omitempty"`
-	ShipDate               Timestamp             `json:"shipDate,omitempty"`
+	ShipDate               *time.Time            `json:"shipDate,omitempty"`
 	ShipFromSupplySourceId *string               `json:"shipFromSupplySourceId,omitempty"`
 	OrderItems             ShipmentOrderItemList `json:"orderItems,omitempty"`
 }
