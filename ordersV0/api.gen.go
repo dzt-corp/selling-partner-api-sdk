@@ -4,9 +4,11 @@
 package ordersV0
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -139,6 +141,9 @@ type ClientInterface interface {
 
 	// GetOrderItemsBuyerInfo request
 	GetOrderItemsBuyerInfo(ctx context.Context, orderId string, params *GetOrderItemsBuyerInfoParams) (*http.Response, error)
+
+	// Create confirm shipment
+	CreateShipmentConfirmation(ctx context.Context, orderId string, body CreateShipmentConfirmationBody) (*http.Response, error)
 }
 
 func (c *Client) GetOrders(ctx context.Context, params *GetOrdersParams) (*http.Response, error) {
@@ -1160,4 +1165,79 @@ func ParseGetOrderItemsBuyerInfoResp(rsp *http.Response) (*GetOrderItemsBuyerInf
 	}
 
 	return response, err
+}
+
+// NewGetOrderItemsRequest generates requests for GetOrderItems
+func NewCreateShipmentConfirmationRequest(endpoint string, orderId string, body CreateShipmentConfirmationBody) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParam("simple", false, "orderId", orderId)
+	if err != nil {
+		return nil, err
+	}
+
+	queryUrl, err := url.Parse(endpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	basePath := fmt.Sprintf("/orders/v0/orders/%s/shipmentConfirmation", pathParam0)
+	if basePath[0] == '/' {
+		basePath = basePath[1:]
+	}
+
+	queryUrl, err = queryUrl.Parse(basePath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryUrl.Query()
+
+	queryUrl.RawQuery = queryValues.Encode()
+
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+
+	req, err := http.NewRequest("POST", queryUrl.String(), bodyReader)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", "application/json")
+	return req, nil
+}
+
+func (c *Client) CreateShipmentConfirmation(ctx context.Context, orderId string, body CreateShipmentConfirmationBody) (*http.Response, error) {
+	req, err := NewCreateShipmentConfirmationRequest(c.Endpoint, orderId, body)
+	if err != nil {
+		return nil, err
+	}
+
+	req = req.WithContext(ctx)
+	req.Header.Set("User-Agent", c.UserAgent)
+	if c.RequestBefore != nil {
+		err = c.RequestBefore(ctx, req)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	rsp, err := c.Client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if c.ResponseAfter != nil {
+		err = c.ResponseAfter(ctx, rsp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return rsp, nil
 }
